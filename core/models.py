@@ -8,8 +8,8 @@ class User(models.Model):
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now=True)
-    enable = models.BooleanField()
-    user_default = models.BooleanField()
+    enable = models.BooleanField(default=True)
+    user_default = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'USER'
@@ -64,7 +64,7 @@ class PaymentData(models.Model):
 class Account(PaymentData):
     agency = models.IntegerField()
     operation = models.IntegerField()
-    enable = models.BooleanField()
+    enable = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'ACCOUNT'
@@ -75,7 +75,7 @@ class Account(PaymentData):
 
 class CreditCard(PaymentData):
     flag = models.CharField(max_length=20)
-    enable = models.BooleanField()
+    enable = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'CREDIT_CARD'
@@ -128,7 +128,7 @@ class Category(models.Model):
     title = models.CharField(max_length=60)
     description = models.CharField(max_length=300, blank=True, null=True)
     created = models.DateTimeField(auto_now=True)
-    enable = models.BooleanField()
+    enable = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'CATEGORY'
@@ -167,7 +167,7 @@ class Transact(models.Model):
     description = models.CharField(max_length=300)
     date = models.DateTimeField()
     value = models.FloatField()
-    parceled_out = models.BooleanField()
+    parceled_out = models.BooleanField(default=False)
     parceled_times = models.IntegerField()
     parceled_freq = models.CharField(
         max_length=10,
@@ -179,7 +179,7 @@ class Transact(models.Model):
         choices=METHOD,
         default=CREDIT
     )
-    paid = models.BooleanField()
+    paid = models.BooleanField(default=False)
     date_paid = models.DateTimeField(blank=True, null=True)
     payment_split = models.ForeignKey(
         'PaymentSplit',
