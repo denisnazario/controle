@@ -1,4 +1,8 @@
-
-
+command.sql
+controle/__pycache__/
 controle/.env
 venv/
+core/__pycache__/
+core/migrations/__pycache__/
+db.sqlite3
+.env
