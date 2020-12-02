@@ -1,6 +1,3 @@
 To do controle:
 
-In Budget, put updated field how auto_now attribute;
 Enable field need a defeault property on all models;
-In Transact, date paid field need null=true;
-PaymentSplit need a title?

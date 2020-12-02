@@ -35,7 +35,7 @@ class Budget(models.Model):
     estimate = models.FloatField()
     cost = models.FloatField()
     created = models.DateTimeField(auto_now=True)
-    updated = models.DateTimeField()
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'BUDGET'
@@ -85,6 +85,7 @@ class CreditCard(PaymentData):
 
 
 class PaymentSplit(models.Model):
+    title = models.CharField(max_length=50)
     personal_1 = models.ForeignKey(
         'User',
         on_delete=models.DO_NOTHING,
@@ -118,6 +119,9 @@ class PaymentSplit(models.Model):
 
     class Meta:
         db_table = 'PAYMENT_SPLIT'
+
+    def __str__(self):
+        return self.title
 
 
 class Category(models.Model):
@@ -176,7 +180,7 @@ class Transact(models.Model):
         default=CREDIT
     )
     paid = models.BooleanField()
-    date_paid = models.DateTimeField()
+    date_paid = models.DateTimeField(blank=True, null=True)
     payment_split = models.ForeignKey(
         'PaymentSplit',
         on_delete=models.DO_NOTHING,
