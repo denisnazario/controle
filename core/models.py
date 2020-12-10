@@ -1,6 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
+"""
+User class will not used for now.
 class User(models.Model):
     name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
@@ -16,17 +19,18 @@ class User(models.Model):
 
     def __str__(self):
         return self.name
+"""
 
 
 class Budget(models.Model):
     title = models.CharField(max_length=50)
     host = models.ForeignKey(
-        'User',
+        User,
         on_delete=models.DO_NOTHING,
         related_name='+'
     )
     guest = models.ForeignKey(
-        'User',
+        User,
         blank=True,
         null=True,
         on_delete=models.DO_NOTHING,
@@ -49,7 +53,7 @@ class PaymentData(models.Model):
     bank = models.CharField(max_length=50)
     number = models.IntegerField()
     user = models.ForeignKey(
-        'User',
+        User,
         on_delete=models.DO_NOTHING,
         related_name='+'
     )
@@ -87,13 +91,13 @@ class CreditCard(PaymentData):
 class PaymentSplit(models.Model):
     title = models.CharField(max_length=50)
     personal_1 = models.ForeignKey(
-        'User',
+        User,
         on_delete=models.DO_NOTHING,
         related_name='+'
     )
     percentage_1 = models.IntegerField()
     personal_2 = models.ForeignKey(
-        'User',
+        User,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
@@ -101,7 +105,7 @@ class PaymentSplit(models.Model):
     )
     percentage_2 = models.IntegerField()
     personal_3 = models.ForeignKey(
-        'User',
+        User,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
@@ -109,7 +113,7 @@ class PaymentSplit(models.Model):
     )
     percentage_3 = models.IntegerField()
     personal_4 = models.ForeignKey(
-        'User',
+        User,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
@@ -136,6 +140,7 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+
 class Transact(models.Model):
     DAILY = 'day'
     WEEKLY = 'week'
@@ -158,7 +163,7 @@ class Transact(models.Model):
 
     METHOD = [
         (CASH, 'cash'),
-        (CREDIT,'credit card'),
+        (CREDIT, 'credit card'),
         (DEBIT, 'debit'),
         (ETV, 'electronic transfer of values')
     ]
