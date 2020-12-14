@@ -1,22 +1,27 @@
 from . import serializers
 from . import models
-from rest_framework import generics
+from rest_framework import viewsets
+from django.db.models import Q
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 
-class BudgetList(generics.ListAPIView):
-    queryset = models.Budget.objects.all()
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'budgets': reverse('budgets-list', request=request, format=format)
+    })
+
+
+class BudgetViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.BudgetSerializer
 
+    def get_queryset(self):
+        user = self.request.user
+        return models.Budget.objects.filter(
+            Q(host=user) | Q(guest=user)
+        )
 
-"""
-class NewsListToday(generics.ListAPIView):
-
-    Return news publisheds today until 3 days back.
-
-    queryset = Classificacao.objects.using(db).filter(
-        date__lte=datetime.today().strftime('%Y-%m-%d'),
-        date__gte=(datetime.today() - timedelta(days=3)).strftime('%Y-%m-%d')
-    )
-
-    serializer_class = ClassificacaoSerializer
-"""
+    def perform_create(self, serializer):
+        serializer.save(host=self.request.user)
