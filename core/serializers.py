@@ -12,3 +12,9 @@ class BudgetSerializer(serializers.ModelSerializer):
             'estimate',
             'cost'
         ]
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Category
+        fields = ['title', 'description']
