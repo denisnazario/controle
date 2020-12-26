@@ -30,3 +30,33 @@ class BudgetViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
+
+
+class AccountViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.AccountSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return models.Account.objects.filter(user=user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class CardViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.CardSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return models.CreditCard.objects.filter(user=user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class PaymentDataViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.PaymentDataSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return models.PaymentData.objects.filter(user=user)
