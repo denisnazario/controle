@@ -36,3 +36,19 @@ class PaymentDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.PaymentData
         fields = []
+
+
+class PaymentSplitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PaymentSplit
+        fields = [
+            'title',
+            'personal_1',
+            'percentage_1',
+            'personal_2',
+            'percentage_2',
+            'personal_3',
+            'percentage_3',
+            'personal_4',
+            'percentage_4'
+        ]

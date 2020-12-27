@@ -60,3 +60,19 @@ class PaymentDataViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return models.PaymentData.objects.filter(user=user)
+
+
+class PaymentSplitViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.PaymentSplitSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return models.PaymentSplit.objects.filter(
+            Q(personal_1=user) |
+            Q(personal_2=user) |
+            Q(personal_3=user) |
+            Q(personal_4=user) 
+        )
+    
+    def perform_create(self, serializer):
+        serializer.save(personal_1=self.request.user)

@@ -49,6 +49,18 @@ payment_data_detail = views.PaymentDataViewSet.as_view({
     'delete': 'destroy'
 })
 
+payment_split_list = views.PaymentSplitViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+
+payment_split_detail = views.PaymentSplitViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
+
 urlpatterns = [
     path('', views.api_root),
     path('budgets/', budget_list, name='budget-list'),
@@ -59,5 +71,7 @@ urlpatterns = [
     path('payment-data/account/<int:pk>/', account_detail, name='account-detail'),
     path('payment-data/card/', card_list, name='card-list'),
     path('payment-data/card/<int:pk>/', card_detail, name='card-detail'),
-    path('payment-data/<int:pk>/', payment_data_detail, name='payment-data-detail')
+    path('payment-data/<int:pk>/', payment_data_detail, name='payment-data-detail'),
+    path('payment-split/', payment_split_list, name='payment-split-list'),
+    path('payment-split/<int:pk>/', payment_split_detail, name='payment-split-detail')
 ]
