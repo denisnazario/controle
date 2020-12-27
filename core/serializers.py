@@ -52,3 +52,24 @@ class PaymentSplitSerializer(serializers.ModelSerializer):
             'personal_4',
             'percentage_4'
         ]
+
+
+class TransactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Transact
+        fields = [
+            'title',
+            'description',
+            'date',
+            'value',
+            'parceled_out',
+            'parceled_times',
+            'parceled_freq',
+            'payment_meth',
+            'paid',
+            'date_paid',
+            'payment_split',
+            'payment_data',
+            'category',
+            'budget'
+        ]

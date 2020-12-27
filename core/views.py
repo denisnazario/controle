@@ -76,3 +76,13 @@ class PaymentSplitViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(personal_1=self.request.user)
+
+
+class TransactViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.TransactSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return models.Transact.objects.filter(
+            Q(budget__host=user) | Q(budget__guest=user)
+        ) 
