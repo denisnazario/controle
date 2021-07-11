@@ -1,25 +1,10 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.contrib.auth.models import User
 
-
-"""
-User class will not used for now.
-class User(models.Model):
-    name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-    email = models.EmailField(max_length=200)
-    username = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
-    created = models.DateTimeField(auto_now=True)
-    enable = models.BooleanField(default=True)
-    user_default = models.BooleanField(default=False)
-
-    class Meta:
-        db_table = 'USER'
-
-    def __str__(self):
-        return self.name
-"""
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 
 class Budget(models.Model):
@@ -212,3 +197,34 @@ class Transact(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Calendar(models.Model):
+    day = models.DateField()
+    budget_id = models.ForeignKey(
+        'Budget',
+        on_delete=models.DO_NOTHING,
+        related_name='+'
+    )
+    transact_id = models.ForeignKey(
+        'Transact',
+        on_delete=models.DO_NOTHING,
+        related_name='+'    
+    )
+    class Meta:
+        db_table = 'CALENDAR'
+
+    def __str__(self):
+        return str(self.day)
+
+@receiver(post_save, sender=Transact)
+def insert_calendar(sender, instance, **kwargs):
+    if kwargs.get('created'):
+        date = datetime.date(instance.date)
+        for time in range(instance.parceled_times):
+            calendar = Calendar(
+                day=date + relativedelta(months=time),
+                budget_id=instance.budget,
+                transact_id=instance
+            )
+            calendar.save()

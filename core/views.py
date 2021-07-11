@@ -85,4 +85,5 @@ class TransactViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return models.Transact.objects.filter(
             Q(budget__host=user) | Q(budget__guest=user)
-        ) 
+        )
+     
